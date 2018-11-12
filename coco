@@ -1,0 +1,58 @@
+#!/bin/sh
+#
+#
+
+# jms for sunjiajia
+#
+# chkconfig:   2345 20 80
+# description: coco start script
+
+### BEGIN INIT INFO
+# Provides:          coco
+# Required-Start:    $network $syslog 
+# Required-Stop:     $network $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Guacamole proxy daemon
+# Description:  I Love Sunjiajia.
+### END INIT INFO
+# Source function library
+#. /etc/rc.d/init.d/functions
+
+
+case "$1" in
+start)
+    echo "Starting Coco..."
+    source /opt/py3/bin/activate
+
+    cd /opt/coco
+    nohup ./cocod start -d 1>/dev/null 2>/dev/null &
+    sleep 1     
+    ;;
+
+stop)
+    echo "Stopping Coco..."
+    kill -9  `cat /opt/coco/coco.pid`
+    
+    sleep 1
+    ;;
+
+restart)
+    echo "Stopping Coco..."
+    kill -9  `cat /opt/coco/coco.pid`    
+    sleep 1
+
+    echo "Starting Jms..."   
+
+    source /opt/py3/bin/activate
+    cd /opt/coco
+    nohup ./cocod start -d 1>/dev/null 2>/dev/null &
+    sleep 1
+
+    ;;
+
+*)
+    echo "Usage:  {start|stop|restart}"
+    ;;
+esac
+exit 0
