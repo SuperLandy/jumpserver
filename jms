@@ -1,0 +1,61 @@
+#!/bin/sh
+#
+#
+
+# jms for sunjiajia
+#
+# chkconfig:   2345 20 80
+# description: jms start script
+
+### BEGIN INIT INFO
+# Provides:          jms
+# Required-Start:    $network $syslog 
+# Required-Stop:     $network $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Guacamole proxy daemon
+# Description:  I Love Sunjiajia.
+### END INIT INFO
+# Source function library
+#. /etc/rc.d/init.d/functions
+
+
+case "$1" in
+start)
+    echo "Starting Jms_cocod..."
+    source /opt/py3/bin/activate
+    cd /opt/jumpserver
+    nohup ./jms start all -d 1>/dev/null 2>/dev/null &
+    sleep 5
+    ;;
+
+stop)
+    echo "Stopping Jms_cocod..."
+    kill -9  `cat /opt/jumpserver/tmp/beat.pid`
+
+    kill -9  `cat /opt/jumpserver/tmp/celery.pid`
+
+    kill -9  `cat /opt/jumpserver/tmp/gunicorn.pid`
+    sleep 1
+    ;;
+
+restart)
+    echo "Stopping Jms_cocod..."
+    kill -9  `cat /opt/jumpserver/tmp/beat.pid`
+    kill -9  `cat /opt/jumpserver/tmp/celery.pid`
+    kill -9  `cat /opt/jumpserver/tmp/gunicorn.pid`
+    sleep 1
+
+    echo "Starting Jms_cocod..."   
+    source /opt/py3/bin/activate
+    cd /opt/jumpserver
+    nohup ./jms start all -d 1>/dev/null 2>/dev/null &
+    sleep 5
+
+    ;;
+
+*)
+    echo "Usage: $prog {start|stop|restart}"
+    ;;
+esac
+exit 0
