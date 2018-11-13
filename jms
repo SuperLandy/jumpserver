@@ -23,13 +23,13 @@ start)
 
 stop)
     # Stopping Jms...
-    pid=`ps -ef | grep -v grep | egrep '(gunicorn|celery|beat|cocod)' | awk '{print $2}'`
+    pid=`ps -ef | grep -v grep | egrep '(gunicorn|celery|beat)' | awk '{print $2}'`
     kill -9 ${pid}
     ;;
 
 restart)
     # Restarting Jms...
-    pid=`ps -ef | grep -v grep | egrep '(gunicorn|celery|beat|cocod)' | awk '{print $2}'`
+    pid=`ps -ef | grep -v grep | egrep '(gunicorn|celery|beat)' | awk '{print $2}'`
     kill -9 ${pid}
 
     sleep 1
