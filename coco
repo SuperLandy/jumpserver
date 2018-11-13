@@ -2,51 +2,44 @@
 #
 #
 
-# jms for sunjiajia
+# coco for sunjiajia
 #
-# chkconfig:   2345 20 80
+# chkconfig:   2345 30 80
 # description: coco start script
 
-### BEGIN INIT INFO
 # Provides:          coco
-# Required-Start:    $network $syslog 
-# Required-Stop:     $network $syslog
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: Guacamole proxy daemon
 # Description:  I Love Sunjiajia.
-### END INIT INFO
-# Source function library
-#. /etc/rc.d/init.d/functions
+
 
 
 case "$1" in
 start)
-    echo "Starting Coco..."
-    source /opt/py3/bin/activate
-
-    cd /opt/coco
-    nohup ./cocod start -d 1>/dev/null 2>/dev/null &
+    # Starting Coco...
+    source /opt/py3/bin/activate 
+    cd /opt/coco && ./cocod start -d 
     sleep 1     
     ;;
 
 stop)
-    echo "Stopping Coco..."
-    kill -9  `cat /opt/coco/coco.pid`
+    # Stopping Coco...
+    pid=`ps -ef | grep -v grep | egrep '(cocod)' | awk '{print $2}'`
+    kill -9 ${pid}
     
     sleep 1
     ;;
 
 restart)
-    echo "Stopping Coco..."
-    kill -9  `cat /opt/coco/coco.pid`    
-    sleep 1
+    
 
-    echo "Starting Jms..."   
+    # Restarting Cocod"   
+    pid=`ps -ef | grep -v grep | egrep '(cocod)' | awk '{print $2}'`
+    kill -9 ${pid}
+    
 
     source /opt/py3/bin/activate
-    cd /opt/coco
-    nohup ./cocod start -d 1>/dev/null 2>/dev/null &
+    cd /opt/coco && ./cocod restart -d 
     sleep 1
 
     ;;
